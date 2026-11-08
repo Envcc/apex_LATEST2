@@ -1,0 +1,85 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Apex Bureau platform user (Client, Contractor, or Auditor)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["CLIENT", "BUREAU", "ADMIN"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Engagement": {
+      "title": "Engagement",
+      "description": "A high-stakes outcome-based contract",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "bureauId": { "type": "string" },
+        "title": { "type": "string" },
+        "objective": { "type": "string" },
+        "status": { "type": "string", "enum": ["DRAFT", "SCOPING", "PRICED", "FUNDED", "IN_PROGRESS", "VERIFYING", "COMPLETED", "DISPUTED"] },
+        "totalFee": { "type": "number" },
+        "currency": { "type": "string" },
+        "geographicZone": { "type": "string" },
+        "riskPremium": { "type": "number" },
+        "complexityMultiplier": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientId", "title", "objective", "status"]
+    },
+    "AOU": {
+      "title": "Atomic Operational Unit",
+      "description": "A discrete, verifiable unit of work within an engagement",
+      "type": "object",
+      "properties": {
+        "engagementId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "dependencies": { "type": "array", "items": { "type": "string" } },
+        "estimatedHours": { "type": "number" },
+        "status": { "type": "string", "enum": ["PENDING", "READY", "IN_PROGRESS", "VERIFYING", "COMPLETED", "FAILED"] },
+        "exitCriteria": { "type": "object" },
+        "order": { "type": "number" }
+      },
+      "required": ["engagementId", "title", "status"]
+    },
+    "Milestone": {
+      "title": "Milestone",
+      "description": "A financial release trigger",
+      "type": "object",
+      "properties": {
+        "engagementId": { "type": "string" },
+        "title": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["LOCKED", "READY", "RELEASED"] },
+        "poHash": { "type": "string" },
+        "releasedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["engagementId", "title", "amount", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/engagements/{engagementId}": {
+      "schema": "Engagement",
+      "description": "Engagement contracts"
+    },
+    "/engagements/{engagementId}/aous/{aouId}": {
+      "schema": "AOU",
+      "description": "Atomic Operational Units for an engagement"
+    },
+    "/engagements/{engagementId}/milestones/{milestoneId}": {
+      "schema": "Milestone",
+      "description": "Financial milestones for an engagement"
+    }
+  }
+}

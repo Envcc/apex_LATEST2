@@ -1,0 +1,8 @@
+{
+  "name": "Apex Bureau",
+  "description": "International Contractor of Outcomes. Deterministic architecture replacing vague SLAs with guaranteed, cryptographically verified results.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "permissions": []
+}
