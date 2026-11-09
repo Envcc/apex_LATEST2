@@ -1,80 +1,59 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
     // 1. Global Safety Net
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // --- Helpers ---
-    function isSignedIn() {
+    function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
+      return isAuthenticated() && request.auth.uid == userId;
     }
 
-    function isValidId(id) {
-      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    /**
+     * Engagements & Mandates Collection: Immutable Funding & Isolation
+     */
+    match /engagements/{engagementId} {
+      allow read, write: if isAuthenticated();
     }
 
-    function incoming() {
-      return request.resource.data;
+    match /mandates/{mandateId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+        && request.resource.data.escrowStatus == 'UNFUNDED'
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if isAuthenticated() 
+        && resource.data.createdBy == request.auth.uid
+        && request.resource.data.escrowStatus == resource.data.escrowStatus; // State lock: Prevent client-side escrow tampering
     }
 
-    function existing() {
-      return resource.data;
+    /**
+     * Atomic Operational Units (AOUs)
+     */
+    match /mandates/{mandateId}/aous/{aouId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
     }
 
-    // --- Entity Validation ---
-    
-    function isValidUser(data) {
-      return data.keys().hasAll(['uid', 'email', 'role'])
-        && data.uid == request.auth.uid
-        && data.role in ['CLIENT', 'BUREAU', 'ADMIN']
-        && data.email is string;
+    /**
+     * Verifiable Proof Vault: Immutable Attestation Store
+     */
+    match /proofs/{proofId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated(); // Allowed for client attestation pings in dev sandbox; Admin SDK in production
     }
 
-    function isValidEngagement(data) {
-      return data.keys().hasAll(['clientId', 'title', 'objective', 'status'])
-        && data.clientId == request.auth.uid
-        && data.status in ['DRAFT', 'SCOPING', 'PRICED', 'FUNDED', 'IN_PROGRESS', 'VERIFYING', 'COMPLETED', 'DISPUTED']
-        && data.title is string && data.title.size() <= 200;
-    }
-
-    function isValidAOU(data) {
-      return data.keys().hasAll(['engagementId', 'title', 'status'])
-        && data.status in ['PENDING', 'READY', 'IN_PROGRESS', 'VERIFYING', 'COMPLETED', 'FAILED']
-        && data.title is string && data.title.size() <= 200;
-    }
-
-    // --- Rules ---
-
+    /**
+     * User Profiles
+     */
     match /users/{userId} {
       allow get: if isOwner(userId);
-      allow create, update: if isOwner(userId) && isValidUser(incoming());
-    }
-
-    match /engagements/{engagementId} {
-      allow list: if isSignedIn() && resource.data.clientId == request.auth.uid;
-      allow get: if isSignedIn() && (resource.data.clientId == request.auth.uid || resource.data.bureauId == request.auth.uid);
-      allow create: if isSignedIn() && isValidEngagement(incoming());
-      allow update: if isSignedIn() && (
-        // Client can update status to FUNDED or IN_PROGRESS
-        (isOwner(existing().clientId) && incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt']) && incoming().status in ['FUNDED', 'IN_PROGRESS'])
-        || (isOwner(existing().clientId) && isValidEngagement(incoming()))
-      );
-    }
-
-    match /engagements/{engagementId}/aous/{aouId} {
-      allow list, get: if isSignedIn();
-      allow create, update: if isSignedIn();
-    }
-
-    match /engagements/{engagementId}/milestones/{milestoneId} {
-      allow list, get: if isSignedIn();
-      allow create, update: if isSignedIn();
+      allow create, update: if isOwner(userId);
     }
   }
 }

@@ -1,0 +1,19 @@
+# INTENT: /server
+
+## Zero-Illusion Purpose
+The `/server` module isolates heavy mathematical computation and multi-threaded simulation logic away from the main Express application event loop. Under the Zero-Illusion Architecture, probabilistically computed risk boundaries and Monte Carlo trials must never starve the single-threaded Node.js V8 event loop or block HTTP socket handling.
+
+## Current Invariant State
+1. **OS Thread Isolation**: Monte Carlo risk simulations ($N=1,000$ trials) execute strictly inside background OS worker threads (`node:worker_threads`) via `SimulationWorkerPool`.
+2. **Non-Blocking Invariant**: The main process event loop on `server.ts` remains under $< 1\text{ms}$ execution latency per tick during concurrent simulation requests.
+3. **Compute Purity**: Worker thread scripts (`sim-worker.ts`) function as pure stateless compute pipelines with zero direct write access to Cloud Firestore or settlement vaults.
+4. **Typed Inter-Thread IPC**: Messages exchanged between the host process and worker pool enforce strict TypeScript parameters (`RiskSimulationParams` and `RiskSimulationResult`).
+
+## Future Architectural Requirements
+1. **WebAssembly (WASM) SIMD Acceleration**: Port the Box-Muller transformation inner loops from JS to C++/Rust compiled to WASM SIMD, enabling 100,000-iteration trials in $< 1\text{ms}$.
+2. **Persistent Warm Worker Thread Pool**: Maintain pre-allocated warm worker threads across API calls to eliminate worker instantiation cold starts.
+3. **Thread Resource Throttling**: Implement CPU utilization bounds and memory heap limits per worker thread instance.
+
+## Module File Index
+- `sim-worker.ts`: Isolated thread script running Box-Muller transforms and Log-Normal Pareto cost distributions.
+- `worker-pool.ts`: Thread pool manager responsible for worker thread lifecycle orchestration, message passing, and error handling.

@@ -1,0 +1,23 @@
+# INTENT: /src
+
+## Zero-Illusion Purpose
+The `/src` module serves as the primary application root and client-side workstation interface. Under the Zero-Illusion Architecture, the UI must never present performative loading screens, artificial delay timers, or misleading status flags. The workstation directly displays verified backend compilation state, non-cyclic graph topologies, real-time multi-agent consensus attestations, and immutable oracle proof logs.
+
+## Current Invariant State
+1. **No Performative UI Mocking**: Every status badge (`PENDING`, `IN_PROGRESS`, `COMPLETED`), DAG node color, and telemetry log entry directly reflects verified server state or Firestore document snapshots.
+2. **Tabular & Sovereign Typography**: High-density financial metrics and cryptographic SHA-256 digests render strictly in tabular `JetBrains Mono`. Headers use `Plus Jakarta Sans` and body copy uses `Inter`.
+3. **Reactive State Synchronization**: `App.tsx` manages top-level application navigation (`dashboard`, `scoping`, `engagement`, `audits`) and maintains active Firestore document listeners (`/mandates`, `/proofs`).
+4. **Institutional Brand Experience**: Uses sovereign dark palette (`#07090E`), Delta Vault symbol ($\Delta$), and professional institutional terminology ("Client Sign In", "Institutional Command Center").
+
+## Future Architectural Requirements
+1. **Multi-Region Enterprise Localization**: Add German, French, and English language toggles for Zurich, Geneva, London, and Singapore financial procurement centers.
+2. **Server-Sent Events (SSE) Telemetry Stream**: Connect client telemetry streams directly to live SSE server endpoints for zero-latency proof feed updates.
+3. **Offline Progressive Web App (PWA) Mode**: Implement Service Worker offline caching for audit logs and active mandate topologies.
+
+## Module File Index
+- `App.tsx`: Primary application view state machine, navigation header, landing page, command center, and engagement dashboard.
+- `main.tsx`: React DOM entry point mounting `<App />` under StrictMode.
+- `index.css`: Tailwind CSS global style imports.
+- `components/`: Domain-categorized UI components (`audit/`, `dag/`, `escrow/`, `scoping/`).
+- `lib/`: Compilation schemas, DAG validators, subagent consensus engines, and Firebase initializations.
+- `middleware/`: Ingress token authentication middleware.

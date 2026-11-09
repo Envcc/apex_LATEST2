@@ -1,0 +1,17 @@
+# INTENT: /src/middleware
+
+## Zero-Illusion Purpose
+`/src/middleware` provides the zero-trust identity assertion layer for Apex Bureau server routes. In keeping with Zero-Illusion principles, unauthenticated calls or spoofed headers cannot invoke AST compilation, Monte Carlo simulation, attestation signing, or verification endpoints.
+
+## Current Invariant State
+1. **Strict Bearer Auth (`auth.ts`)**: Enforces RFC 6750 Bearer authentication header parsing (`Authorization: Bearer <token>`) on all state mutation and verification endpoints.
+2. **Active Token Revocation (`auth.ts`)**: Invokes Firebase Admin SDK `adminAuth.verifyIdToken(token, true)` with `checkRevoked = true` to immediately block revoked or compromised tokens.
+3. **Environment Security Enclaves (`auth.ts`)**: Development bypass flags (`x-dev-sandbox-bypass`) are active strictly in non-production environments and fail closed in production modes.
+
+## Future Architectural Requirements
+1. **Attribute-Based Access Control (ABAC)**: Parse JWT custom claims (`token.role === 'AUDITOR' | 'EXECUTIVE' | 'ACTUARY'`) to enforce granular role-based endpoint permissions.
+2. **Rate-Limiting & IP Throttling**: Add Redis/memory-backed sliding window rate limiters to defend state mutation endpoints (`/api/scope`, `/api/cost`) against denial-of-wallet vectors.
+3. **mTLS Client Certificate Verification**: Implement mutual TLS authentication for institutional banking partner endpoints.
+
+## Module File Index
+- `auth.ts`: Ingress Bearer authentication middleware with Firebase Admin SDK token revocation verification.

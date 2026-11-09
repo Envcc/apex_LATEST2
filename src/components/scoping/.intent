@@ -1,0 +1,18 @@
+# INTENT: /src/components/scoping
+
+## Zero-Illusion Purpose
+`/src/components/scoping` handles natural language intent entry, subjective ambiguity elimination, and human scoping binding. It provides the UI interface for transforming probabilistic generative AI suggestions into hardened, human-signed contract criteria.
+
+## Current Invariant State
+1. **Ambiguity Heatmap Filtering (`IntentInputForm.tsx`)**: Scans user input directives for unquantifiable subjective terms (`fast`, `seamless`, `secure`, `scalable`) and calculates a Real-Time Verifiability Score.
+2. **Human Scoping Binding (`ScopingEditor.tsx`)**: Empowers principals to inspect candidate AST units emitted by Gemini Flash, modify unit titles/complexity scalars, and configure explicit assertion URLs before contract compilation.
+3. **AST Schema Binding**: Ensures modified AST nodes adhere strictly to `MandateASTSchema` invariants before submitting to backend validation APIs.
+
+## Future Architectural Requirements
+1. **Automated Assertion Endpoint Generator**: Suggest verified HTTP endpoints or GitHub repo webhook URLs based on intent context.
+2. **Historical Scope Template Library**: Allow procurement teams to import pre-validated outcome templates for standardized engineering deliverables.
+3. **Diff Inspector for Refined Directives**: Render visual side-by-side diffs between candidate LLM ASTs and human-refined ASTs.
+
+## Module File Index
+- `IntentInputForm.tsx`: Natural language directive input form with real-time ambiguity parser and verifiability score indicator.
+- `ScopingEditor.tsx`: Human Scoping Binding editor for candidate AST node customization and executive sign-off.

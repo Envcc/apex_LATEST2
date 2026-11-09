@@ -1,0 +1,24 @@
+# INTENT: /src/components
+
+## Zero-Illusion Purpose
+`/src/components` provides the institutional UI workstation for Apex Bureau. Designed for procurement officers, risk auditors, and enterprise executives, all components present real-time verified contract state and cryptographic attestations without performative loaders, fake progress bars, or synthetic delays.
+
+## Current Invariant State
+1. **Zero Performative Animation**: Every UI indicator (escrow status, multi-agent consensus, exit verification) reflects verified server telemetry.
+2. **Institutional Visual Standard**: Styled with Sovereign Dark (`#07090E`), Monolith Slate (`#0F172A`), Escrow Emerald (`#10B981`), and tabular JetBrains Mono metrics for financial clarity.
+3. **Domain Component Modularization**: Component hierarchy is partitioned strictly into domain subfolders (`/scoping`, `/dag`, `/escrow`, `/audit`).
+
+## Future Architectural Requirements
+1. **Server-Sent Events (SSE) Integration**: Connect component streams to live SSE backend endpoints (`/api/stream/telemetry`) for real-time verification updates.
+2. **Multi-Language Enterprise Localization**: Implement i18n support for Zurich (German), Geneva (French), and London/Singapore (English) financial desks.
+3. **Accessible Keyboard Navigation & High-Contrast Mode**: Enhance WCAG AAA compliance across institutional audit panels and DAG canvas controls.
+
+## Module File Index
+- `Header.tsx`: Institutional navigation bar, Delta Vault symbol ($\Delta$), and active workspace telemetry.
+- `MandateMetrics.tsx`: High-level portfolio capital metrics and outcome execution stats.
+- `MandateList.tsx`: Ledger of active and settled institutional outcome mandates.
+- `MandateDetailModal.tsx`: In-depth inspection view for contract AST, proofs, and attestation logs.
+- `scoping/`: Scope drafting and human AST binding components.
+- `dag/`: Directed Acyclic Graph visualizers and topological flow editors.
+- `escrow/`: Actuarial Monte Carlo slider, P90 insolvency-proof fee calculator, and vault commitment triggers.
+- `audit/`: Telemetry oracle proof viewers and multi-agent consensus verification panels.

@@ -1,0 +1,18 @@
+# INTENT: /src/components/audit
+
+## Zero-Illusion Purpose
+`/src/components/audit` renders verification proofs, multi-agent consensus attestations, and live oracle telemetry streams. It presents verifiable cryptographic evidence (SHA-256 digests, MACH hashes, HTTP REST response status checks) directly to financial auditors and compliance officers.
+
+## Current Invariant State
+1. **Real Consensus Rendering (`SubagentVerificationPanel.tsx`)**: Displays actual status checks from all 5 subagents (`ScopingArchitect`, `InvariantValidator`, `ActuarialUnderwriter`, `OracleVerifier`, `SettlementEscrow`).
+2. **Cryptographic Proof Transparency (`TelemetryStream.tsx`)**: Exposes signed SHA-256 payload hashes, server timestamps, and assertion URLs from `/proofs` Firestore collection without masking or truncate-blurring.
+3. **No Mock Consensus State**: Renders consensus signatures (`MACH-*`) derived directly from backend `/api/agents/verify` responses.
+
+## Future Architectural Requirements
+1. **Docker Container Log Inspection**: Expand `TelemetryStream.tsx` to render stdout/stderr logs from sandbox container verification enclaves.
+2. **TLSNotary Proof Viewer**: Add UI tab to inspect off-chain TLSNotary cryptographic handshake proofs.
+3. **Exportable Audit Certificate**: Generate downloadable PDF/JSON attestation reports signed with HSM keys for regulatory archiving.
+
+## Module File Index
+- `SubagentVerificationPanel.tsx`: Displays real-time multi-agent consensus status and signed `MACH` hashes.
+- `TelemetryStream.tsx`: Renders real-time oracle verification logs and immutable Firestore proof records.

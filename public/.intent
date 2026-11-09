@@ -1,0 +1,15 @@
+# INTENT: /public
+
+## Zero-Illusion Purpose
+`/public` serves static brand assets, icons, and document templates for the Apex Bureau institutional client application.
+
+## Current Invariant State
+1. **Direct Vite Serving**: Static assets are served uncompressed and directly mapped by Vite dev server and production Express middleware.
+2. **Immutable Asset Hashing**: Public images and brand SVGs maintain strict content hashes for browser cache invalidation.
+
+## Future Architectural Requirements
+1. **CDN Edge Acceleration**: Offload public static assets to global Cloud CDN endpoints near Zurich, London, and Singapore enterprise centers.
+2. **Dynamic OpenGraph Social Card Generation**: Support server-side edge rendering for outcome contract share cards.
+
+## Module File Index
+- `vite.svg`: Default Vite logo placeholder asset.

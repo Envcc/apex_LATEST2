@@ -1,0 +1,17 @@
+# INTENT: /src/components/dag
+
+## Zero-Illusion Purpose
+`/src/components/dag` provides the topological work breakdown visualizer for Apex Bureau outcome mandates. It converts compiled AST nodes and verified DAG relationships into an interactive execution graph, enabling executive inspection of dependencies, execution states, and atomic unit exit criteria.
+
+## Current Invariant State
+1. **Topological Dependency Graphing (`ExecutionGraphView.tsx`)**: Renders parent-child dependency edges derived directly from DFS-validated `dependsOn` arrays.
+2. **Deterministic State Representation**: Displays real operational node states (`PENDING`, `IN_PROGRESS`, `VERIFIED`, `FAILED`) driven strictly by backend database telemetry.
+3. **Complexity & Proof Count Metrics**: Displays complexity scalars ($1.0 - 3.0$), estimated durations, and assertion endpoint count for every node in the graph.
+
+## Future Architectural Requirements
+1. **Interactive Node Layout Engine**: Integrate automatic Sugiyama/D3 topological layout positioning for large graph topologies ($N > 50$ nodes).
+2. **Critical Path Highlighting**: Visually highlight the longest execution path in cyan to indicate schedule bottleneck risk.
+3. **Node-Level Manual Verification Drawer**: Enable auditors to trigger manual 2-of-3 multi-sig arbitration overrides directly on individual node cards.
+
+## Module File Index
+- `ExecutionGraphView.tsx`: Interactive DAG visualizer rendering node cards, dependency connections, and execution statuses.

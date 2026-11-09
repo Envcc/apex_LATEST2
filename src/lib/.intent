@@ -1,0 +1,25 @@
+# INTENT: /src/lib
+
+## Zero-Illusion Purpose
+`/src/lib` houses the deterministic core compilation, mathematical modeling, formal Zod validation, topological graph analysis, and multi-agent consensus protocols for Apex Bureau. Generative model outputs are treated as raw untrusted string candidates; this module compiles, validates, underwrites, and verifies them before any contract state can be mutated or persisted.
+
+## Current Invariant State
+1. **Schema Integrity (`ast-compiler.ts`)**: All candidate AST structures emitted by generative LLM models are validated via Zod (`MandateASTSchema`). Invalid UUIDs, missing exit criteria, or out-of-bound scalars trigger immediate rejection.
+2. **Topological Non-Cyclic Proof (`dag-validator.ts`)**: Every execution graph undergoes Depth-First Search (DFS) graph traversal (`assertValidAOUDAG`) with recursion stack tracking to mathematically guarantee zero circular deadlocks and no dangling parent pointers.
+3. **Fat-Tailed Actuarial Math (`simulation-engine.ts`)**: Solves risk using Box-Muller transformations and Log-Normal Pareto distributions ($N=1,000$ trials) to model heavy-tailed delivery risks and produce P50, P80, P90, and P99 tail bounds.
+4. **Multi-Agent Consensus (`subagent-verification.ts`)**: Runs cross-checks across all 5 specialized subagents (`ScopingArchitect`, `InvariantValidator`, `ActuarialUnderwriter`, `OracleVerifier`, `SettlementEscrow`) to produce a cryptographically signed Multi-Agent Consensus Hash (`MACH-*`).
+5. **Admin SDK Firebase Integrity (`firebase-admin.ts`, `firebase.ts`)**: Server-side persistence bypasses client rules securely using Firebase Admin SDK with mandatory auth token revocation checks.
+
+## Future Architectural Requirements
+1. **WASM Vectorized Monte Carlo Core**: Port Box-Muller transformation loops to Rust/C++ compiled to WebAssembly with SIMD acceleration for 100,000 trials in <1ms.
+2. **Critical Path Calculation**: Extend `dag-validator.ts` to compute longest topological path cost and construct parallel execution tiers for concurrent worker dispatch.
+3. **TLSNotary & Hardware Signing**: Integrate Cloud KMS / HSM cryptographic key signing for `MACH` consensus hashes and TLSNotary proof verification.
+
+## Module File Index
+- `ast-compiler.ts`: AST Candidate parsing, Markdown fence stripping, and Zod schema validation.
+- `dag-validator.ts`: DFS topological cycle detection and parent node reference integrity validator.
+- `subagent-verification.ts`: Multi-agent cross-verification suite generating signed `MACH` consensus reports.
+- `simulation-engine.ts`: Log-Normal Pareto Monte Carlo risk simulation engine.
+- `firebase-admin.ts`: Firebase Admin SDK initialization for server-side authority operations.
+- `firebase.ts`: Firebase Client SDK initialization for auth and client query hooks.
+- `utils.ts`: Tailwind class merging utility (`clsx` + `tailwind-merge`).
